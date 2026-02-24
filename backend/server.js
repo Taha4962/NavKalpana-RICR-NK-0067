@@ -1,6 +1,6 @@
 // ============================================
 // Server Entry Point
-// Basic Express server with MongoDB connection
+// Express server with all routes and middleware
 // ============================================
 
 const express = require('express');
@@ -18,7 +18,7 @@ connectDB();
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
 app.use(express.json());
 
 // Health check route
@@ -29,8 +29,27 @@ app.get('/', (req, res) => {
   });
 });
 
-// Routes will be added here on Day 2
-// app.use('/api/auth', require('./routes/authRoutes'));
+// ============================================
+// API Routes
+// ============================================
+app.use('/api/auth', require('./routes/authRoutes'));
+app.use('/api/dashboard', require('./routes/dashboardRoutes'));
+app.use('/api/batches', require('./routes/batchRoutes'));
+app.use('/api/assessment', require('./routes/assessmentRoutes'));
+app.use('/api/students', require('./routes/studentRoutes'));
+app.use('/api/attendance', require('./routes/attendanceRoutes'));
+app.use('/api/support', require('./routes/supportRoutes'));
+
+// 404 handler
+app.use((req, res) => {
+  res.status(404).json({ message: `Route ${req.originalUrl} not found` });
+});
+
+// Global error handler
+app.use((err, req, res, next) => {
+  console.error('Server Error:', err.stack);
+  res.status(500).json({ message: 'Internal server error', error: err.message });
+});
 
 // Start server
 const PORT = process.env.PORT || 5000;
