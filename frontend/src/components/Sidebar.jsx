@@ -10,6 +10,8 @@ import {
   HiOutlineClipboardList,
   HiOutlineUsers,
   HiOutlineSupport,
+  HiOutlineChartBar,
+  HiOutlineStar,
 } from 'react-icons/hi';
 
 const navItems = [
@@ -18,6 +20,8 @@ const navItems = [
   { to: '/assessment', icon: HiOutlineClipboardList, label: 'Assessment Management' },
   { to: '/students', icon: HiOutlineUsers, label: 'Student Management' },
   { to: '/support', icon: HiOutlineSupport, label: 'Support Requests' },
+  { to: '/analytics', icon: HiOutlineChartBar, label: 'Analytics' },
+  { to: '/leaderboard', icon: HiOutlineStar, label: 'Leaderboard' },
 ];
 
 const Sidebar = () => {

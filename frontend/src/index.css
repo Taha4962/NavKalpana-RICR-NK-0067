@@ -1603,3 +1603,235 @@ a:hover { color: var(--accent-hover); }
   .page-content { padding: 1rem; }
   .navbar-greeting { flex-wrap: wrap; }
 }
+
+/* ==================== ANALYTICS PAGE ==================== */
+.analytics-page { max-width: 1200px; }
+
+.analytics-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Heatmap */
+.heatmap-grid {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 4px;
+  margin-bottom: 1rem;
+}
+
+.heatmap-cell {
+  aspect-ratio: 1;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition);
+  position: relative;
+}
+
+.heatmap-cell:hover {
+  transform: scale(1.2);
+  z-index: 2;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+
+.heatmap-date {
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: rgba(0,0,0,0.7);
+}
+
+.heatmap-legend {
+  display: flex;
+  gap: 1.25rem;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  align-items: center;
+}
+
+.heatmap-swatch {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  margin-right: 0.375rem;
+  vertical-align: middle;
+}
+
+/* Monitoring Cards */
+.monitoring-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.25rem;
+}
+
+.monitoring-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  transition: var(--transition);
+}
+
+.monitoring-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+}
+
+.monitoring-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.monitoring-info {
+  flex: 1;
+}
+
+.monitoring-info h4 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.monitoring-enrollment {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.monitoring-course-badge {
+  margin-bottom: 0.75rem;
+}
+
+.monitoring-chart {
+  margin-bottom: 0.75rem;
+  background: var(--bg-primary);
+  border-radius: var(--radius-sm);
+  padding: 0.5rem;
+}
+
+.monitoring-ogi-label {
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-top: 0.25rem;
+}
+
+.monitoring-stats {
+  display: flex;
+  justify-content: space-around;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.75rem;
+  padding: 0.5rem 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.monitoring-stats span {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+/* ==================== LEADERBOARD PAGE ==================== */
+.leaderboard-page { max-width: 1200px; }
+
+.podium-section {
+  margin-bottom: 2rem;
+}
+
+.podium {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 1.5rem;
+  padding: 1rem 0;
+}
+
+.podium-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.375rem;
+  min-width: 120px;
+}
+
+.podium-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), var(--cyan));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: white;
+  border: 3px solid;
+}
+
+.podium-trophy {
+  font-size: 1.75rem;
+}
+
+.podium-name {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  text-align: center;
+}
+
+.podium-ogi {
+  font-size: 1.25rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--accent), var(--cyan));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.podium-pedestal {
+  width: 100%;
+  border-radius: 8px 8px 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: auto;
+}
+
+.podium-rank {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text-muted);
+}
+
+/* Spinning refresh icon */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.spin-icon {
+  animation: spin 1s linear infinite;
+}
+
+/* ==================== RESPONSIVE — Part 2 ==================== */
+@media (max-width: 1024px) {
+  .analytics-kpi-grid { grid-template-columns: repeat(3, 1fr); }
+  .podium { gap: 1rem; }
+}
+
+@media (max-width: 768px) {
+  .analytics-kpi-grid { grid-template-columns: 1fr; }
+  .monitoring-grid { grid-template-columns: 1fr; }
+  .heatmap-grid { grid-template-columns: repeat(6, 1fr); }
+  .podium { flex-direction: column; align-items: center; }
+  .podium-item { min-width: 100%; }
+}

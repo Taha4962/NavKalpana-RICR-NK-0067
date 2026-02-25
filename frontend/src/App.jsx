@@ -14,6 +14,8 @@ import AttendanceManagement from './pages/AttendanceManagement';
 import AssessmentManagement from './pages/AssessmentManagement';
 import StudentManagement from './pages/StudentManagement';
 import SupportRequests from './pages/SupportRequests';
+import Analytics from './pages/Analytics';
+import Leaderboard from './pages/Leaderboard';
 import './index.css';
 
 // Protected route wrapper — redirects to login if no token
@@ -55,6 +57,8 @@ function App() {
           <Route path="/assessment" element={<AssessmentManagement />} />
           <Route path="/students" element={<StudentManagement />} />
           <Route path="/support" element={<SupportRequests />} />
+          <Route path="/analytics" element={<Analytics />} />
+          <Route path="/leaderboard" element={<Leaderboard />} />
         </Route>
 
         {/* Default redirect */}
