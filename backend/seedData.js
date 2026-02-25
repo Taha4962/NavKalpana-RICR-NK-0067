@@ -303,6 +303,67 @@ const seedDB = async () => {
     await db.collection('supportrequests').insertMany(supportData);
     console.log('3 Support Requests seeded');
 
+    // ==================== WEEKLY SNAPSHOTS (8 weeks for all students) ====================
+    const snapshotData = [];
+    // OGI trends per student: [week1...week8] base values that vary
+    const ogiProfiles = [
+      // STU001 Aarav — Excellent, consistently high
+      { quiz: [78,82,85,88,90,92,93,95], assignment: [80,82,85,87,90,91,93,94], attendance: [90,92,90,94,92,95,93,95], completion: [40,50,60,70,75,80,85,90], consistency: [85,88,90,92,90,95,93,95] },
+      // STU002 Priya — Improving steadily
+      { quiz: [50,55,58,62,65,70,72,75], assignment: [48,52,56,60,65,68,72,74], attendance: [80,82,83,85,85,87,88,90], completion: [30,35,40,45,50,55,60,65], consistency: [60,65,68,70,72,75,78,80] },
+      // STU003 Rohan — Needs Attention, low and declining
+      { quiz: [55,52,48,45,42,40,38,35], assignment: [50,48,45,42,40,38,35,32], attendance: [50,48,45,42,40,42,40,38], completion: [20,20,25,25,30,30,30,30], consistency: [45,42,40,38,35,32,30,28] },
+      // STU004 Sneha — Excellent and stable high
+      { quiz: [90,92,91,93,94,92,95,96], assignment: [88,90,91,92,93,94,95,96], attendance: [95,96,98,97,98,99,98,99], completion: [80,85,90,92,95,98,100,100], consistency: [90,92,93,95,95,96,98,98] },
+      // STU005 Vikram — Stable mid-range
+      { quiz: [65,66,64,67,65,66,68,67], assignment: [62,64,63,65,64,66,65,67], attendance: [70,72,70,73,71,72,74,73], completion: [50,52,54,55,56,58,60,60], consistency: [68,70,68,72,70,71,73,72] },
+      // STU006 Ananya — Improving from low
+      { quiz: [35,40,45,48,52,55,58,62], assignment: [32,38,42,46,50,54,58,60], attendance: [55,58,60,62,65,68,70,72], completion: [20,25,30,35,40,45,50,55], consistency: [40,45,48,52,55,58,62,65] },
+      // STU007 Karan — Good and stable
+      { quiz: [75,76,78,77,79,80,78,82], assignment: [72,74,76,75,78,79,80,82], attendance: [85,86,88,87,88,90,89,90], completion: [50,55,58,60,62,65,68,70], consistency: [78,80,82,80,83,85,84,86] },
+      // STU008 Meera — Declining from ok
+      { quiz: [65,62,58,55,52,50,48,45], assignment: [60,58,55,52,50,48,45,42], attendance: [60,58,55,52,50,48,45,42], completion: [25,25,28,28,30,30,30,30], consistency: [55,52,50,48,45,42,40,38] },
+      // STU009 Dev — Excellent and improving
+      { quiz: [80,82,85,87,88,90,92,95], assignment: [82,84,86,88,90,92,94,95], attendance: [92,93,94,95,95,96,97,98], completion: [70,75,80,85,88,90,95,100], consistency: [88,90,92,93,94,95,96,98] },
+      // STU010 Nisha — Needs Attention, very low
+      { quiz: [30,28,32,30,28,25,30,28], assignment: [25,28,26,24,22,20,25,22], attendance: [30,28,32,30,28,25,28,25], completion: [20,22,25,28,30,32,35,38], consistency: [30,28,25,22,20,22,25,22] },
+    ];
+
+    for (let si = 0; si < studentIds.length; si++) {
+      const profile = ogiProfiles[si];
+      for (let w = 1; w <= 8; w++) {
+        const weekStart = new Date();
+        weekStart.setDate(weekStart.getDate() - (8 - w) * 7);
+        weekStart.setHours(0, 0, 0, 0);
+        const weekEnd = new Date(weekStart);
+        weekEnd.setDate(weekStart.getDate() + 6);
+
+        const quiz = profile.quiz[w - 1];
+        const assignment = profile.assignment[w - 1];
+        const attendance = profile.attendance[w - 1];
+        const completion = profile.completion[w - 1];
+        const consistency = profile.consistency[w - 1];
+        const OGI = parseFloat((quiz * 0.25 + assignment * 0.25 + attendance * 0.25 + completion * 0.15 + consistency * 0.10).toFixed(2));
+
+        snapshotData.push({
+          studentId: studentIds[si],
+          weekNumber: w,
+          weekStartDate: weekStart,
+          weekEndDate: weekEnd,
+          quizAverage: quiz,
+          assignmentAverage: assignment,
+          completionRate: completion,
+          submissionConsistency: consistency,
+          attendancePercentage: attendance,
+          OGI,
+          createdAt: new Date(),
+        });
+      }
+    }
+    try { await db.collection('weeklysnapshots').deleteMany({}); } catch (e) { /* may not exist */ }
+    await db.collection('weeklysnapshots').insertMany(snapshotData);
+    console.log(`${snapshotData.length} Weekly Snapshots seeded (8 weeks × 10 students)`);
+
     console.log('\n=== ALL SEED DATA INSERTED SUCCESSFULLY ===');
     console.log('Login: teacher@portal.com / Teacher@123');
     process.exit(0);
